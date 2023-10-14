@@ -8,7 +8,8 @@ from nicegui import Client, ui
 
 OPENAI_API_KEY = 'sk-jljBGTijKco1ECoFAIOdln20t/wBlfvji2CdW17hhTkIAQAA'  # TODO: set your OpenAI API key here
 API_HOST="https://api.app4gpt.com"
-llm = ConversationChain(llm=ChatOpenAI(model_name='gpt-3.5-turbo', openai_api_key=OPENAI_API_KEY))
+# llm = ConversationChain(llm=ChatOpenAI(model_name='gpt-3.5-turbo', openai_api_key=OPENAI_API_KEY))
+llm = ConversationChain(llm=ChatOpenAI(model_name='gpt-3.5-turbo', openai_api_key=OPENAI_API_KEY, api_host=API_HOST))
 
 messages: List[Tuple[str, str]] = []
 thinking: bool = False
@@ -54,4 +55,4 @@ async def main(client: Client):
         ui.markdown('simple chat app built with [NiceGUI](https://nicegui.io)') \
             .classes('text-xs self-end mr-8 m-[-1em] text-primary')
 
-ui.run(title='Chat with GPT-3 (example)')
+ui.run(title='ChatRobot',port=8901)

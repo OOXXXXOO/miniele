@@ -3,6 +3,8 @@ from typing import Tuple
 from nicegui import ui
 import time
 import asyncio
+import datetime
+import random
 
 loca_dict = {}
 loca_dict["San Francisco"] = {
@@ -236,22 +238,49 @@ class leaflet(ui.element, component='leaflet.js'):
         self.last_img = None
         self.last_json = None
         self.last_card = None
+        self.timeline = None
 
     async def set_location(self, location: Tuple[float, float]) -> None:
         city = locations.get(location)
         self.run_method('set_location', location[0], location[1])        
         detail = loca_dict.get(city)
-        await asyncio.sleep(20)        
+        await asyncio.sleep(20)
 
         if self.last_img is not None:
             self.last_img.delete()
         if self.last_json is not None:
             self.last_json.delete()
         if self.last_card is not None:
-            self.last_card
+            self.last_card.delete()
+        if self.timeline is not None:
+            self.timeline.delete()
 
+        with ui.timeline(side='right') as timeline:
+          self.timeline = timeline
+          sights = detail.get("PopularTouristSpots")
+          add_hours = random.choice([0, 24, 48, 72])
+          cur = datetime.datetime.now() 
+          ix = 0
+          for sight in sights:
+            addr_half = sight.split(":")[0]
+            describe = sight.split(":")[1]
+            addr = addr_half.split(" ")[-1]
+            add_hours = random.choice([0, 24, 48, 72])
+            if ix != 0:
+              cur = cur + datetime.timedelta(hours = add_hours)
+            ymd = cur.strftime('%Y-%m-%d')
+            if ix == 0:
+              ui.timeline_entry(describe,
+                                title = addr,
+                                subtitle = ymd,
+                                icon = "rocket")
+            else:
+              ui.timeline_entry(describe,
+                                title = addr,
+                                subtitle = ymd)
+              ix += 1
         with ui.card().tight().classes("md:flex bg-slate-100 rounded-xl p-8 md:p-0 dark:bg-slate-800") as card:
-          self.last_card
+          self.last_card = card
           self.last_img = ui.image(images_dic.get(city)).classes("w-384 h-512 md:w-128 md:h-auto md:rounded-none rounded-full mx-auto")    
           with ui.card_section().classes("pt-4 md:p-6 text-center md:text-left space-y-4"):
             label_str = ""
@@ -263,5 +292,5 @@ class leaflet(ui.element, component='leaflet.js'):
             label_str += "机场:" + traffic.get("Airport") + "\n"
             label_str += "公共交通:" + traffic.get("PublicTransit") + "\n"
             label_str += "高速" + traffic.get("Airport")
-            print(label_str)
+            # print(label_str)
             self.last_json =  ui.label(label_str).classes("text-lg font-light")

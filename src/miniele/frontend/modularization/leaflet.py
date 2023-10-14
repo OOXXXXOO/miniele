@@ -265,9 +265,8 @@ class leaflet(ui.element, component='leaflet.js'):
             addr_half = sight.split(":")[0]
             describe = sight.split(":")[1]
             addr = addr_half.split(" ")[-1]
-            add_hours = random.choice([0, 24, 48, 72])
-            if ix != 0:
-              cur = cur + datetime.timedelta(hours = add_hours)
+            add_hours = random.choice([24, 48, 72])
+            cur = cur + datetime.timedelta(hours = add_hours)
             ymd = cur.strftime('%Y-%m-%d')
             if ix == 0:
               ui.timeline_entry(describe,
@@ -278,7 +277,7 @@ class leaflet(ui.element, component='leaflet.js'):
               ui.timeline_entry(describe,
                                 title = addr,
                                 subtitle = ymd)
-              ix += 1
+              ix = ix + 1
         with ui.card().tight().classes("md:flex bg-slate-100 rounded-xl p-8 md:p-0 dark:bg-slate-800") as card:
           self.last_card = card
           self.last_img = ui.image(images_dic.get(city)).classes("w-384 h-512 md:w-128 md:h-auto md:rounded-none rounded-full mx-auto")    

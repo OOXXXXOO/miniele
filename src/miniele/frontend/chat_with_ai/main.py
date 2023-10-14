@@ -7,7 +7,7 @@ from langchain.chat_models import ChatOpenAI
 from nicegui import Client, ui
 
 OPENAI_API_KEY = 'sk-jljBGTijKco1ECoFAIOdln20t/wBlfvji2CdW17hhTkIAQAA'  # TODO: set your OpenAI API key here
-
+API_HOST="https://api.app4gpt.com"
 llm = ConversationChain(llm=ChatOpenAI(model_name='gpt-3.5-turbo', openai_api_key=OPENAI_API_KEY))
 
 messages: List[Tuple[str, str]] = []

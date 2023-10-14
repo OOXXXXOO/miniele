@@ -1,0 +1,52 @@
+<!--
+ Copyright 2023 tanwenxuan
+ 
+ Licensed under the Apache License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+ 
+     http://www.apache.org/licenses/LICENSE-2.0
+ 
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+-->
+
+
+<html>
+<head>
+  <title>PDF Viewer</title>
+  <script src="https://mozilla.github.io/pdf.js/build/pdf.js"></script>
+</head>
+<body>
+  <div id="pdfContainer"></div>
+
+  <script>
+    // URL to the local PDF file
+    var pdfFile = '/Users/tanwenxuan/workspace/minielements/miniele/src/miniele/frontend/modularization/ARK–Invest_BigIdeas_2021.pdf';
+
+    // PDF.js configuration
+    pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://mozilla.github.io/pdf.js/build/pdf.worker.js';
+
+    // Load and render the local PDF
+    pdfjsLib.getDocument(pdfFile).promise.then(function (pdf) {
+      pdf.getPage(1).then(function (page) {
+        var pdfContainer = document.getElementById('pdfContainer');
+        var canvas = document.createElement('canvas');
+        pdfContainer.appendChild(canvas);
+        var context = canvas.getContext('2d');
+        var viewport = page.getViewport({ scale: 1.5 });
+        canvas.height = viewport.height;
+        canvas.width = viewport.width;
+        page.render({ canvasContext: context, viewport: viewport });
+      });
+    });
+  </script>
+</body>
+</html>
+
+
+
+

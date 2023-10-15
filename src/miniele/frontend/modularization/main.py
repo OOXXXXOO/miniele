@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-import example_c
+# import example_c
 import example_pages
 import home_page
 import theme
@@ -50,6 +50,6 @@ def index_page() -> None:
 example_pages.create()
 
 # we can also use the APIRouter as described in https://nicegui.io/documentation/page#modularize_with_apirouter
-app.include_router(example_c.router)
+# app.include_router(example_c.router)
 
 ui.run(title='Elements.AI',port=8999,reload=platform.system() != 'Windows')
